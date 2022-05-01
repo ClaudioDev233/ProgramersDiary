@@ -8,7 +8,6 @@ namespace ProgrammersDiary.Domain.Entities
 {
     public class Card : Entity
     {
-        public string Nome { get; set; }
         public string Descricao { get; set; }
         public int LinguagemId { get; set; }
         public Linguagem Linguagem { get; set; }
