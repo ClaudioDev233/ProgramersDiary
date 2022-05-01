@@ -10,6 +10,8 @@ namespace ProgrammersDiary.Domain.Entities
     {
         public string Descricao { get; set; }
         public int LinguagemId { get; set; }
+        public string Codigo { get; set; }
+        public string LabelLinguagem { get; set; }
         public Linguagem Linguagem { get; set; }
     }
 }
