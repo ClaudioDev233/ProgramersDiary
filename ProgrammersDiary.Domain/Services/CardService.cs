@@ -30,7 +30,7 @@ namespace ProgrammersDiary.Domain.Services
 
         public List<Card> ObterTodos()
         {
-            throw new NotImplementedException();
+            return _context.Cards.ToList();
         }
     }
 }
