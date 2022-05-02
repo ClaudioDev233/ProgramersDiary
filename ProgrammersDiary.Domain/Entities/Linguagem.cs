@@ -9,5 +9,6 @@ namespace ProgrammersDiary.Domain.Entities
     public class Linguagem : Entity
     {
         public List<Card>? Cards { get; set; }
+        public string LabelLinguagem { get; set; }
     }
 }
