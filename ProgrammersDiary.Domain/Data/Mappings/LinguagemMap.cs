@@ -18,6 +18,13 @@ namespace ProgrammersDiary.Domain.Data.Mappings
             .HasColumnType("varchar(100)");
 
             builder.Property(linguagem => linguagem.LabelLinguagem).HasColumnType("varchar(50)");
+
+            // seeds
+            builder.HasData(new List<Linguagem>{
+                new Linguagem(1,"javascript","js"),
+                new Linguagem(2,"css","css"),
+                new Linguagem(3,"html","html")
+            });
         }
     }
 }

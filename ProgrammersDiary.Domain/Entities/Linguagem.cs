@@ -10,5 +10,13 @@ namespace ProgrammersDiary.Domain.Entities
     {
         public List<Card>? Cards { get; set; }
         public string LabelLinguagem { get; set; }
+
+        public Linguagem(int id, string nome, string labelLanguage) 
+        {
+            Id = id;
+            Nome = nome;
+            LabelLinguagem = labelLanguage;
+        }
+        public Linguagem(){}
     }
 }
