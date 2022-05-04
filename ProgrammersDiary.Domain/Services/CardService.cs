@@ -25,7 +25,7 @@ namespace ProgrammersDiary.Domain.Services
 
         public List<Card> ObterTodos()
         {
-            return _context.Cards.ToList();
+            return _context.Cards.Include(card => card.Linguagem).ToList();
         }
 
         public int Criar(Card entidade)
@@ -37,7 +37,8 @@ namespace ProgrammersDiary.Domain.Services
 
         public void Atualizar(Card cardOriginal, Card cardAtualizado)
         {
-            throw new NotImplementedException();
+            cardOriginal.AtualizarDados(cardAtualizado);
+            _context.SaveChanges();
         }
 
        
@@ -46,5 +47,13 @@ namespace ProgrammersDiary.Domain.Services
             _context.Dispose();
         }
 
+        public void Delete(int id )
+        {
+            var card = ObterPorId(id);
+            if (card is null )
+                throw new Exception("O card solicitado não existe");
+            _context.Cards.Remove(card);    
+            _context.SaveChanges();
+        }
     }
 }

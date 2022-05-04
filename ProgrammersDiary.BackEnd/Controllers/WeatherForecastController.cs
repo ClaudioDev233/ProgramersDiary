@@ -29,5 +29,9 @@ namespace ProgrammersDiary.BackEnd.Controllers
             })
             .ToArray();
         }
+        [HttpPost]
+        public ActionResult Teste(WeatherForecast teste) {
+            return Ok();
+        }
     }
 }

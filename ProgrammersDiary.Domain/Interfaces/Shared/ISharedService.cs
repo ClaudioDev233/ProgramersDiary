@@ -8,5 +8,7 @@ namespace ProgrammersDiary.Domain.Interfaces.Shared
         public TEntity? ObterPorId(int id);
         public int Criar(TEntity entidade);
         public void Atualizar(TEntity cardOriginal, TEntity cardAtualizado);
+
+        public void Delete(int id);
     }
 }
