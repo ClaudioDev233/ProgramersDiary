@@ -35,9 +35,9 @@ namespace ProgrammersDiary.Domain.Services
             return entidade.Id;
         }
 
-        public void Atualizar(Card cardOriginal, Card cardAtualizado)
+        public void Atualizar()
         {
-            cardOriginal.AtualizarDados(cardAtualizado);
+            // cardOriginal.AtualizarDados(cardAtualizado);
             _context.SaveChanges();
         }
 

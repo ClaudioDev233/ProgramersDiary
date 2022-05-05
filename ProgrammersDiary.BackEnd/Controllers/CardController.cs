@@ -55,8 +55,8 @@ namespace ProgrammersDiary.BackEnd.Controllers
             var cardOriginal = _cardService.ObterPorId(id);
             if(cardOriginal is null)
                 return NotFound();
-                
-            _cardService.Atualizar(cardOriginal,cardAtualizado.ConverteParaEntidade());    
+            cardOriginal.AtualizarDados(cardAtualizado.ConverteParaEntidade());    
+            _cardService.Atualizar();    
             return NoContent();
         }
 

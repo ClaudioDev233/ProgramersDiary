@@ -12,7 +12,7 @@ namespace ProgrammersDiary.Domain.Services
         {
             _context = context;
         }
-        public void Atualizar(Linguagem cardOriginal, Linguagem cardAtualizado)
+        public void Atualizar()
         {
             throw new NotImplementedException();
         }
