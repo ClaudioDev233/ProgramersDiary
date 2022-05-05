@@ -21,9 +21,16 @@ namespace ProgrammersDiary.Domain.Data.Mappings
 
             // seeds
             builder.HasData(new List<Linguagem>{
-                new Linguagem(1,"javascript","js"),
+                new Linguagem(1,"babel","js"),
                 new Linguagem(2,"css","css"),
-                new Linguagem(3,"html","html")
+                new Linguagem(3,"babel","json"),
+                new Linguagem(4,"typescript","ts"),
+                new Linguagem(5,"scss","scss"),
+                new Linguagem(6,"less","less"),
+                new Linguagem(7,"markdown","markdown"),
+                new Linguagem(8,"html","html"),
+                new Linguagem(9,"php","php"),
+                new Linguagem(10,"xml","xml"),
             });
         }
     }
