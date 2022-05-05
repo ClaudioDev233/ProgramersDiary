@@ -16,6 +16,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<DataContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("Andre")));
 
 builder.Services.AddScoped<ICardService, CardService>();
+builder.Services.AddScoped<ILinguagemService, LinguagemService>();
 var app = builder.Build();
 
 
