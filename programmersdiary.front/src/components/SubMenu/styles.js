@@ -21,6 +21,7 @@ export const List = styled.ul`
   position: absolute;
   bottom: -115px;
   box-shadow: 4px 4px 4px rgba(0, 0, 0, 30%);
+  z-index: 9999;
 
   /* Faz o triangulo */
   &::before {

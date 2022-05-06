@@ -49,50 +49,49 @@ export const linguagens = [
   },
   {
     id: 2,
-    label: "json",
-    value: "babel",
-  },
-  {
-    id: 3,
-    label: "ts",
-    value: "typescript",
-  },
-
-  {
-    id: 6,
     label: "css",
     value: "css",
   },
   {
-    id: 7,
+    id: 3,
+    label: "json",
+    value: "babel",
+  },
+  {
+    id: 4,
+    label: "ts",
+    value: "typescript",
+  },
+  {
+    id: 5,
     label: "scss",
     value: "scss",
   },
   {
-    id: 8,
+    id: 6,
     label: "less",
     value: "less",
   },
 
   {
-    id: 11,
+    id: 7,
     label: "markdown",
     value: "markdown",
   },
 
   {
-    id: 13,
+    id: 8,
     label: "html",
     value: "html",
   },
 
   {
-    id: 15,
+    id: 9,
     label: "php",
     value: "php",
   },
   {
-    id: 16,
+    id: 10,
     label: "xml",
     value: "xml",
   },

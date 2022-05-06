@@ -12,7 +12,6 @@ namespace ProgrammersDiary.Domain.Entities
     {
         [Required]
         public string Descricao { get; private set; }
-        [Required]
         public int LinguagemId { get; private set; }
         [Required]
         public string Codigo { get; private set; }
@@ -28,7 +27,7 @@ namespace ProgrammersDiary.Domain.Entities
             Nome = cardAtualizado.Nome;
             Descricao = cardAtualizado.Descricao;
             Codigo = cardAtualizado.Codigo;
-            Linguagem = cardAtualizado.Linguagem;
+            // Linguagem = cardAtualizado.Linguagem;
             LinguagemId = cardAtualizado.LinguagemId;
         }
     }

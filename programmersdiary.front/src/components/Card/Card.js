@@ -5,8 +5,6 @@ import { ManipulateContext } from "../../context/ManipulaItem/ManipulateItem";
 
 const Card = ({ card, setModalActive }) => {
   const { manipulableItem } = useContext(ManipulateContext);
-  // console.log(manipulableItem);
-  // console.log(card);
   return (
     <Wrapper
       style={{
@@ -16,7 +14,7 @@ const Card = ({ card, setModalActive }) => {
       <Name>{card.nome}</Name>
       <Info>{card.descricao}</Info>
       <WrapperInfo>
-        <Language>{card.labelLanguage}</Language>
+        <Language>{card.linguagem.labelLinguagem}</Language>
         {/* aqui vamos passar o obj */}
         <SubMenu item={card} setModalActive={setModalActive} />
       </WrapperInfo>

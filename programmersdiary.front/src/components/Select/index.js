@@ -1,16 +1,27 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { ContainerSelect, DescriptionSelect, List, Error } from "./styles";
-import { linguagens } from "../../utils/utils";
+// import { linguagens } from "../../utils/utils";
 
-function Select({ label, options, error, ...otherProps }) {
+function Select({
+  label,
+  options,
+  error,
+  value,
+  ListaLinguagens,
+  ...otherProps
+}) {
   return (
     <ContainerSelect>
       <DescriptionSelect>{label}</DescriptionSelect>
-      <List {...otherProps}>
+      <List {...otherProps} value={value}>
         <option defaultValue>Escolha uma linguagem abaixo</option>
-        {linguagens.map((option) => (
-          <option key={option.id} value={option.value}>
-            {option.label}
+        {ListaLinguagens.map((option, indice) => (
+          <option
+            key={crypto.randomUUID()}
+            value={option.nome}
+            tabIndex={indice}
+          >
+            {option.labelLinguagem}
           </option>
         ))}
       </List>

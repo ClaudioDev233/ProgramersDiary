@@ -13,34 +13,33 @@ const Header = ({ obj }) => {
   const [error, setErrors] = useState({});
 
   // caso o card seja novo vai atribuir um id, caso já existe vai atualiza-lo no banco
-  function atribuirIdCardOrUpdate(obj) {
-    obj.id ? crud.atualizar(obj.id, obj) : crud.inserir(obj); // caso ja tenha um id
-    console.log(obj);
-    if (obj.novo) {
-      // aqui vamos estar "adivinhado" um id pro card
-      allCards[allCards.length - 1].id = allCards[allCards.length - 2].id + 1;
-      obj.id = allCards[allCards.length - 2].id + 1;
-      obj.novo = false;
+  async function atribuirIdCardOrUpdate(obj) {
+    if (obj.id) {
       crud.atualizar(obj.id, obj);
+    } else {
+      obj.id = await crud.inserir(obj);
+      obj.novo = false;
     }
+    console.log(obj);
+    console.log(manipulableItem);
   }
+
   /*Alem de salvar, quando o card for alterado va devolver o codigo ja formatado para home*/
   function save() {
     try {
       if (manipulableItem.nome) {
-        const clearCode = prettier.format(manipulableItem.code, {
-          parser: obj.language,
+        const clearCode = prettier.format(manipulableItem.codigo, {
+          parser: obj.linguagem.nome,
           plugins: pluginsLista,
           jsxSingleQuote: true,
           bracketSameLine: true,
         });
         atribuirIdCardOrUpdate(obj);
-        addManipulableItem({ ...manipulableItem, code: clearCode });
+        addManipulableItem({ ...manipulableItem, codigo: clearCode });
         let card = allCards.findIndex((card) => card.id === obj.id);
         allCards[card] = manipulableItem;
         addCards(allCards);
         setErrors({ err: false });
-        console.log(card);
       } else {
         setErrors({ err: "Crie um card antes de começar a digitar" });
       }
@@ -52,7 +51,11 @@ const Header = ({ obj }) => {
     <>
       <HeaderWrapper>
         <Title>
-          {error.err ? <Error texto={error.err} /> : obj.labelLanguage}
+          {error.err ? (
+            <Error texto={error.err} />
+          ) : obj.linguagem ? (
+            obj.linguagem.labelLinguagem
+          ) : null}
         </Title>
         <Save onClick={save}>
           <AiOutlineSave size="30px" />

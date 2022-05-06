@@ -14,9 +14,9 @@ import {
 import { AiOutlineCheck } from "react-icons/ai";
 import { ManipulateContext } from "../../context/ManipulaItem/ManipulateItem";
 import prettier from "prettier";
-import { pluginsLista, possuiAtributos } from "../../utils/utils";
+import { pluginsLista, possuiAtributos, linguagens } from "../../utils/utils";
 
-const Modal = ({ setModalActive, modalActive }) => {
+const Modal = ({ setModalActive, modalActive, ListaLinguagens }) => {
   const { manipulableItem, addManipulableItem } = useContext(ManipulateContext);
   const [nome, setNome] = useState("");
   const [desc, setDesc] = useState("");
@@ -27,7 +27,9 @@ const Modal = ({ setModalActive, modalActive }) => {
   const [newItem, setNewItem] = useState({});
   const [oldItem, setOldItem] = useState({});
   const [errors, setErros] = useState({});
-  console.log(manipulableItem);
+  const [objetoLinguagem, setObjetoLinguagem] = useState({});
+  const [teste, setTeste] = useState({});
+  console.log(manipulableItem.id);
   // caso o container do modal seja clicado, o modal  fecha
   function handleClick(e) {
     if (e.currentTarget == e.target) {
@@ -52,32 +54,54 @@ const Modal = ({ setModalActive, modalActive }) => {
     e.preventDefault();
     const error = checkFields();
     if (possuiAtributos(error) == 0) {
-      let obj = {
-        id: id ? id : "",
-        language: language,
-        labelLanguage: label,
-        nome: nome,
-        descricao: desc,
-        code: prettier.format(code, {
-          parser: language,
-          plugins: pluginsLista,
-        }),
-      };
-      console.log(obj);
       // caso nao exista
       if (!id) {
-        obj.novo = true;
-        console.log(obj);
+        console.log("novo");
+        let obj = {
+          id: id ? id : "",
+          linguagem: {
+            id: objetoLinguagem.id,
+            labelLinguagem: objetoLinguagem.labelLinguagem,
+            nome: objetoLinguagem.nome,
+          },
+          linguagemId: objetoLinguagem.id,
+          nome: nome,
+          descricao: desc,
+          codigo: prettier.format(code, {
+            parser: objetoLinguagem.nome,
+            plugins: pluginsLista,
+          }),
+          aberto: true,
+          novo: true,
+        };
         setNewItem(obj);
-        addManipulableItem(obj);
-        console.log("aqui");
-        console.log(obj);
+        // força a renderização
+        addManipulableItem({ ...obj });
       }
       // caso exista
       else {
-        obj.novo = false;
+        console.log("ja existe");
+        let obj = {
+          aberto: true,
+          novo: false,
+          descricao: desc,
+          nome: nome,
+          linguagem:
+            possuiAtributos(objetoLinguagem) > 2
+              ? objetoLinguagem
+              : manipulableItem.linguagem,
+          linguagemId:
+            possuiAtributos(objetoLinguagem) > 2
+              ? objetoLinguagem.id
+              : manipulableItem.linguagem.id,
+          codigo: prettier.format(code, {
+            parser: manipulableItem.linguagem.nome,
+            plugins: pluginsLista,
+          }),
+        };
+
         setOldItem(obj);
-        addManipulableItem(obj);
+        addManipulableItem({ ...manipulableItem, ...obj });
       }
       setModalActive(false);
     }
@@ -85,27 +109,32 @@ const Modal = ({ setModalActive, modalActive }) => {
 
   // faz um reset no modal quando for aberto
   useEffect(() => {
-    setNome("");
-    setDesc("");
-    setId("");
-    setLanguage("");
-    setCode("");
-    setLabel("");
+    if (modalActive) {
+      setNome("");
+      setDesc("");
+      setId("");
+      setLanguage("");
+      setCode("");
+      setLabel("");
+      // dava certo mas isso aqui causa erro
+      // addManipulableItem({});
+    }
   }, [modalActive]);
 
-  // atribui valores ao modal
+  // atribui valor ao manipulableItem, quando um item existente for aberto para podermos mexer
   useEffect(() => {
-    if (possuiAtributos(manipulableItem) >= 1) {
+    if (possuiAtributos(manipulableItem) >= 3 && !manipulableItem.novo) {
       setNome(manipulableItem.nome);
       setDesc(manipulableItem.descricao);
       setId(manipulableItem.id);
-      setLanguage(manipulableItem.language);
-      setCode(manipulableItem.code);
-      setLabel(manipulableItem.labelLanguage);
+      setLanguage(manipulableItem.linguagem.nome);
+      setCode(manipulableItem.codigo);
+      setLabel(manipulableItem.linguagem);
+      console.log(manipulableItem);
     }
-    return () => {
-      manipulableItem.aberto = false;
-    };
+    // return () => {
+    //   manipulableItem.aberto = false;
+    // };
   }, [manipulableItem]);
 
   // caso crie um novo item, o antigo sera "fechado"
@@ -113,9 +142,9 @@ const Modal = ({ setModalActive, modalActive }) => {
     if (possuiAtributos(manipulableItem) >= 1) {
       newItem.aberto = true;
       oldItem.aberto = false;
+      console.log("asasd");
     }
   }, [newItem]);
-
   // faz o inverso do efeito de cima"
   useEffect(() => {
     if (possuiAtributos(manipulableItem) >= 1) {
@@ -155,9 +184,12 @@ const Modal = ({ setModalActive, modalActive }) => {
                   <Select
                     label="Linguagens"
                     value={language}
+                    ListaLinguagens={ListaLinguagens}
                     onChange={(e) => {
                       setLanguage(e.target.value);
-                      setLabel(e.target.selectedOptions[0].textContent);
+                      setObjetoLinguagem(
+                        ListaLinguagens[e.target.selectedOptions[0].tabIndex]
+                      );
                     }}
                     error={errors.language}
                   ></Select>

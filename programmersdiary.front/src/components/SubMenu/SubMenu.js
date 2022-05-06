@@ -24,10 +24,13 @@ const SubMenu = ({ item, setModalActive }) => {
           <ListItem data-submenu="submenu">
             <Button
               onClick={() => {
+                console.log("manipulableItem: ", manipulableItem);
+                console.log("Item: ", item);
                 if (manipulableItem.aberto && manipulableItem.id === item.id) {
                   manipulableItem.aberto = false;
-                  crud.atualizar(manipulableItem.id, manipulableItem);
+                  // crud.atualizar(manipulableItem.id, manipulableItem);
                   addManipulableItem({});
+                  console.log("teste");
                 }
               }}
             >

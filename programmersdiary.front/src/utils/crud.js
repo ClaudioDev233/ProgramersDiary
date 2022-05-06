@@ -1,3 +1,5 @@
+import CardResquest from "./DTOs/CardResquest";
+
 async function fetchData(url) {
   const data = await (await fetch(url)).json();
   return data;
@@ -7,25 +9,39 @@ export default {
     return await fetchData(url);
   },
   atualizar: (id, obj) => {
-    fetch(`http://localhost:3333/cards/${id}`, {
+    let entidade = new CardResquest(
+      obj.nome,
+      obj.descricao,
+      obj.linguagemId,
+      obj.codigo
+    );
+    fetch(`/card/${id}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(obj),
+      body: JSON.stringify(entidade),
     });
   },
-  inserir(obj) {
-    fetch(`http://localhost:3333/cards/`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(obj),
-    });
+  inserir: async (obj) => {
+    let entidade = new CardResquest(
+      obj.nome,
+      obj.descricao,
+      obj.linguagemId,
+      obj.codigo
+    );
+    return await (
+      await fetch(`/card`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(entidade),
+      })
+    ).json();
   },
   excluir(id) {
-    fetch(`http://localhost:3333/cards/${id}`, {
+    fetch(`/card/${id}`, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
