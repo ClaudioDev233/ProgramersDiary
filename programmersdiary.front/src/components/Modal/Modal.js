@@ -56,7 +56,6 @@ const Modal = ({ setModalActive, modalActive, ListaLinguagens }) => {
     if (possuiAtributos(error) == 0) {
       // caso nao exista
       if (!id) {
-        console.log("novo");
         let obj = {
           id: id ? id : "",
           linguagem: {
@@ -80,7 +79,6 @@ const Modal = ({ setModalActive, modalActive, ListaLinguagens }) => {
       }
       // caso exista
       else {
-        console.log("ja existe");
         let obj = {
           aberto: true,
           novo: false,
