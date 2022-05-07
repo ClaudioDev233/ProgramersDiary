@@ -29,7 +29,7 @@ const Modal = ({ setModalActive, modalActive, ListaLinguagens }) => {
   const [errors, setErros] = useState({});
   const [objetoLinguagem, setObjetoLinguagem] = useState({});
   const [teste, setTeste] = useState({});
-  console.log(manipulableItem.id);
+  console.log(manipulableItem);
   // caso o container do modal seja clicado, o modal  fecha
   function handleClick(e) {
     if (e.currentTarget == e.target) {
@@ -53,6 +53,7 @@ const Modal = ({ setModalActive, modalActive, ListaLinguagens }) => {
   function handleSubmit(e) {
     e.preventDefault();
     const error = checkFields();
+
     if (possuiAtributos(error) == 0) {
       // caso nao exista
       if (!id) {
@@ -76,7 +77,7 @@ const Modal = ({ setModalActive, modalActive, ListaLinguagens }) => {
         };
         setNewItem(obj);
         // força a renderização
-        addManipulableItem({ ...obj });
+        addManipulableItem(obj);
       }
       // caso exista
       else {

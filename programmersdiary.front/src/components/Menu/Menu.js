@@ -79,10 +79,13 @@ const Menu = ({ setModalActive, openCard }) => {
   // adiciona o card novo a lista no menu
   useEffect(() => {
     if (manipulableItem.novo) {
-      // manipulableItem.novo = false;
+      manipulableItem.novo = false;
+      console.log("Novo");
+      console.log(manipulableItem);
       addCards([...allCards, manipulableItem]);
     }
-  }, [manipulableItem.novo]);
+    // aqui
+  }, [manipulableItem]);
 
   return (
     <>
