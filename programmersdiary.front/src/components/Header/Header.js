@@ -5,9 +5,10 @@ import { ManipulateContext } from "../../context/ManipulaItem/ManipulateItem";
 import prettier from "prettier";
 import Error from "../Error/Error";
 import crud from "../../utils/crud";
-import { pluginsLista, possuiAtributos } from "../../utils/utils";
+import { pluginsLista } from "../../utils/utils";
 
-const Header = ({ obj }) => {
+const Header = ({ obj, codigo }) => {
+  console.log(codigo);
   const { manipulableItem, addManipulableItem, allCards, addCards } =
     useContext(ManipulateContext);
   const [error, setErrors] = useState({});
@@ -17,18 +18,17 @@ const Header = ({ obj }) => {
     if (obj.id) {
       crud.atualizar(obj.id, obj);
     } else {
+      obj.codigo = codigo;
       obj.id = await crud.inserir(obj);
-      obj.novo = false;
     }
-    console.log(obj);
-    console.log(manipulableItem);
   }
 
   /*Alem de salvar, quando o card for alterado va devolver o codigo ja formatado para home*/
   function save() {
     try {
       if (manipulableItem.nome) {
-        const clearCode = prettier.format(manipulableItem.codigo, {
+        obj.novo = false;
+        const clearCode = prettier.format(codigo, {
           parser: obj.linguagem.nome,
           plugins: pluginsLista,
           jsxSingleQuote: true,
@@ -36,8 +36,8 @@ const Header = ({ obj }) => {
         });
         atribuirIdCardOrUpdate(obj);
         addManipulableItem({ ...manipulableItem, codigo: clearCode });
-        let card = allCards.findIndex((card) => card.id === obj.id);
-        allCards[card] = manipulableItem;
+        allCards[allCards.findIndex((card) => card.id === obj.id)] =
+          manipulableItem;
         addCards(allCards);
         setErrors({ err: false });
       } else {

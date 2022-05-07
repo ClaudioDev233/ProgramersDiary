@@ -28,8 +28,7 @@ const Modal = ({ setModalActive, modalActive, ListaLinguagens }) => {
   const [oldItem, setOldItem] = useState({});
   const [errors, setErros] = useState({});
   const [objetoLinguagem, setObjetoLinguagem] = useState({});
-  const [teste, setTeste] = useState({});
-  console.log(manipulableItem);
+
   // caso o container do modal seja clicado, o modal  fecha
   function handleClick(e) {
     if (e.currentTarget == e.target) {
@@ -95,10 +94,6 @@ const Modal = ({ setModalActive, modalActive, ListaLinguagens }) => {
             possuiAtributos(objetoLinguagem) > 2
               ? objetoLinguagem.id
               : manipulableItem.linguagem.id,
-          codigo: prettier.format(code, {
-            parser: manipulableItem.linguagem.nome,
-            plugins: pluginsLista,
-          }),
         };
 
         setOldItem(obj);
@@ -131,11 +126,10 @@ const Modal = ({ setModalActive, modalActive, ListaLinguagens }) => {
       setLanguage(manipulableItem.linguagem.nome);
       setCode(manipulableItem.codigo);
       setLabel(manipulableItem.linguagem);
-      console.log(manipulableItem);
     }
-    // return () => {
-    //   manipulableItem.aberto = false;
-    // };
+    return () => {
+      manipulableItem.aberto = false;
+    };
   }, [manipulableItem]);
 
   // caso crie um novo item, o antigo sera "fechado"
@@ -143,7 +137,6 @@ const Modal = ({ setModalActive, modalActive, ListaLinguagens }) => {
     if (possuiAtributos(manipulableItem) >= 1) {
       newItem.aberto = true;
       oldItem.aberto = false;
-      console.log("asasd");
     }
   }, [newItem]);
   // faz o inverso do efeito de cima"

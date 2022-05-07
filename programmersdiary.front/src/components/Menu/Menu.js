@@ -30,10 +30,10 @@ const Menu = ({ setModalActive, openCard }) => {
       const cards = await crud.getAll("card");
       addCards(cards);
       setLoading(false);
+      console.log(cards);
       if (cards.status == 404) {
         addCards([]);
         setLoading(false);
-        console.log("erer");
       }
     };
     fetchdata();
@@ -70,7 +70,6 @@ const Menu = ({ setModalActive, openCard }) => {
       card.nome = openCard.nome;
       card.descricao = openCard.descricao;
       card.linguagem = openCard.linguagem;
-      console.log(card);
     }
     addCards([...allCards]);
     // eslint-disable-next-line
@@ -78,13 +77,9 @@ const Menu = ({ setModalActive, openCard }) => {
 
   // adiciona o card novo a lista no menu
   useEffect(() => {
-    if (manipulableItem.novo) {
-      manipulableItem.novo = false;
-      console.log("Novo");
-      console.log(manipulableItem);
+    if (manipulableItem.novo === true) {
       addCards([...allCards, manipulableItem]);
     }
-    // aqui
   }, [manipulableItem]);
 
   return (

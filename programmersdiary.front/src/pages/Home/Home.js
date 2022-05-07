@@ -23,17 +23,16 @@ const Home = () => {
   }, [manipulableItem]);
 
   // insere no contexto o codigo digitado
-  useEffect(() => {
-    if (textCode) {
-      addManipulableItem({ ...manipulableItem, codigo: textCode });
-    }
-  }, [textCode]);
+  // useEffect(() => {
+  //   if (textCode) {
+  //     addManipulableItem({ ...manipulableItem, codigo: textCode });
+  //   }
+  // }, [textCode]);
 
   useEffect(() => {
     async function getAll() {
       let listaLinguagens = await crud.getAll("linguagem");
       setLinguagens(listaLinguagens);
-      console.log(listaLinguagens);
     }
     getAll();
   }, []);
@@ -48,7 +47,7 @@ const Home = () => {
     <>
       <Wrapper>
         <BlackWrapper>
-          <Header obj={itemCard}></Header>
+          <Header obj={itemCard} codigo={textCode}></Header>
           <CodeMirror
             value={textCode} //{itemCard.codigo ? itemCard.codigo : ""}
             height="64vh"
