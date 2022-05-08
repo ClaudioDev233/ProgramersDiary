@@ -9,6 +9,8 @@ import CodeMirror from "@uiw/react-codemirror";
 import { oneDark } from "@codemirror/theme-one-dark";
 import { codeLanguages, possuiAtributos } from "../../utils/utils";
 import crud from "../../utils/crud.js";
+import prettier from "prettier";
+import { pluginsLista } from "../../utils/utils";
 
 const Home = () => {
   const { manipulableItem, addManipulableItem } = useContext(ManipulateContext);
@@ -45,7 +47,13 @@ const Home = () => {
   // caso um card já existente seja aberto, seu codigo irá para o container de texto
   useEffect(() => {
     if (possuiAtributos(itemCard) >= 3) {
-      setTextCode(itemCard.codigo);
+      const clearCode = prettier.format(itemCard.codigo, {
+        parser: itemCard.linguagem.nome,
+        plugins: pluginsLista,
+        jsxSingleQuote: true,
+        bracketSameLine: true,
+      });
+      setTextCode(clearCode);
     }
   }, [itemCard]);
   return (

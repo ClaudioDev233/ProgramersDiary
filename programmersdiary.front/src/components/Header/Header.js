@@ -6,7 +6,7 @@ import prettier from "prettier";
 import Error from "../Error/Error";
 import crud from "../../utils/crud";
 import { pluginsLista, possuiAtributos } from "../../utils/utils";
-import achaId from "../../utils/achaCard";
+
 /*
   o header vai ser responsavel por salvar o conteudo que está no contexto manipulado.
 */
@@ -52,7 +52,7 @@ const Header = ({ obj, codigo }) => {
     try {
       if (manipulableItem.nome) {
         const clearCode = prettier.format(codigo, {
-          parser: obj.linguagem.nome,
+          parser: manipulableItem.linguagem.nome,
           plugins: pluginsLista,
           jsxSingleQuote: true,
           bracketSameLine: true,
