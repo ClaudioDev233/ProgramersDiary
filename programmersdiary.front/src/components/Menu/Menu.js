@@ -14,10 +14,15 @@ import { BsCodeSlash } from "react-icons/bs";
 import { AiOutlineMenu } from "react-icons/ai";
 import CardSkeleton from "../CardSkeleton/CardSkeleton";
 import { ManipulateContext } from "../../context/ManipulaItem/ManipulateItem";
+import { NewItemContext } from "../../context/NewItem/NewItem";
+import { OldItemContext } from "../../context/OldItem/OldItem";
 
 const Menu = ({ setModalActive, openCard }) => {
   const { manipulableItem, addManipulableItem, allCards, addCards } =
     useContext(ManipulateContext);
+  const { newItem } = useContext(NewItemContext);
+  const { OldItem } = useContext(OldItemContext);
+
   const [search, setSearch] = useState("");
   const [found, setFound] = useState([]);
   const [result, setResult] = useState("");
@@ -61,7 +66,8 @@ const Menu = ({ setModalActive, openCard }) => {
       setResult("Nada achado...");
     }
     // eslint-disable-next-line
-  }, [search, allCards]);
+    // antes aqui tinha o allcards, talvez tenha que recolocar
+  }, [search]);
 
   // quando um card tiver seu nome alterado, vamos forcar a renderizacao para ser atualizado em tempo real
   useEffect(() => {
@@ -77,10 +83,18 @@ const Menu = ({ setModalActive, openCard }) => {
 
   // adiciona o card novo a lista no menu
   useEffect(() => {
-    if (manipulableItem.novo === true) {
-      addCards([...allCards, manipulableItem]);
+    if (newItem.novo === true) {
+      addCards([...allCards, newItem]);
+      /*
+        Como o novo card já foi criado, agr vamos atribui-lo ao contexto de manipulavel para podermos utiliza-lo
+      */
+      addManipulableItem(newItem);
     }
-  }, [manipulableItem]);
+  }, [newItem]);
+
+  useEffect(() => {
+    if (OldItem.novo === false) addManipulableItem(OldItem);
+  }, [OldItem]);
 
   return (
     <>

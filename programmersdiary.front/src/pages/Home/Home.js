@@ -30,6 +30,11 @@ const Home = () => {
   // }, [textCode]);
 
   useEffect(() => {
+    manipulableItem.salvo = false;
+  }, [textCode]);
+
+  // faz um fetch para pegar todas as linguagens do banco de
+  useEffect(() => {
     async function getAll() {
       let listaLinguagens = await crud.getAll("linguagem");
       setLinguagens(listaLinguagens);
@@ -39,7 +44,7 @@ const Home = () => {
 
   // caso um card já existente seja aberto, seu codigo irá para o container de texto
   useEffect(() => {
-    if (possuiAtributos(itemCard) >= 3 && !textCode) {
+    if (possuiAtributos(itemCard) >= 3) {
       setTextCode(itemCard.codigo);
     }
   }, [itemCard]);
@@ -49,7 +54,7 @@ const Home = () => {
         <BlackWrapper>
           <Header obj={itemCard} codigo={textCode}></Header>
           <CodeMirror
-            value={textCode} //{itemCard.codigo ? itemCard.codigo : ""}
+            value={textCode}
             height="64vh"
             width={"100%"}
             onChange={(value, viewUpdate) => {
