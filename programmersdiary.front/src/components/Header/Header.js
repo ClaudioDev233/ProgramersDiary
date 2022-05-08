@@ -17,6 +17,7 @@ const Header = ({ obj, codigo }) => {
   const [teste, setTeste] = useState(false);
 
   useEffect(() => {
+    console.log("aqui");
     let identificador;
     let cardIndice;
     if (manipulableItem.aberto === true) {
@@ -37,9 +38,15 @@ const Header = ({ obj, codigo }) => {
         */
         addManipulableItem({
           ...manipulableItem,
-          salvo: true,
           novo: false,
+          salvo: true,
           id: identificador ? identificador : manipulableItem.id,
+          codigo: prettier.format(manipulableItem.codigo, {
+            parser: manipulableItem.linguagem.nome,
+            plugins: pluginsLista,
+            jsxSingleQuote: true,
+            bracketSameLine: true,
+          }),
         });
         if (cardIndice >= 0) addCards(allCards);
       };
@@ -59,8 +66,6 @@ const Header = ({ obj, codigo }) => {
         });
         // gatilho para invocar o useEffect de cima(é ele quem salva no banco de dados)
         setTeste((value) => !value);
-        // isso aqui é feito para poder mandar o codigo formatado para a home
-        addManipulableItem({ ...manipulableItem, codigo: clearCode });
         setErrors({ err: false });
       } else {
         setErrors({ err: "Crie um card antes de começar a digitar" });
@@ -69,6 +74,7 @@ const Header = ({ obj, codigo }) => {
       setErrors({ err: err });
     }
   }
+  console.log(manipulableItem);
   return (
     <>
       <HeaderWrapper>

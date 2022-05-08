@@ -46,14 +46,8 @@ const Home = () => {
 
   // caso um card já existente seja aberto, seu codigo irá para o container de texto
   useEffect(() => {
-    if (possuiAtributos(itemCard) >= 3) {
-      const clearCode = prettier.format(itemCard.codigo, {
-        parser: itemCard.linguagem.nome,
-        plugins: pluginsLista,
-        jsxSingleQuote: true,
-        bracketSameLine: true,
-      });
-      setTextCode(clearCode);
+    if (itemCard.velho) {
+      setTextCode(itemCard.codigo);
     }
   }, [itemCard]);
   return (

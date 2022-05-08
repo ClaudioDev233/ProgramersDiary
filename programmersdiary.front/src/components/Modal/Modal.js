@@ -101,6 +101,7 @@ const Modal = ({ setModalActive, modalActive, ListaLinguagens }) => {
         let obj = {
           aberto: true,
           novo: false,
+          velho: true,
           salvo: true,
           descricao: desc,
           nome: nome,

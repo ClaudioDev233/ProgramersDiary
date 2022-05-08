@@ -5,8 +5,8 @@ import { ManipulateContext } from "../../context/ManipulaItem/ManipulateItem";
 
 const Card = ({ card, setModalActive }) => {
   const { manipulableItem } = useContext(ManipulateContext);
-  console.log(card);
-  console.log(manipulableItem);
+  // console.log(card);
+  // console.log(manipulableItem);
   return (
     <Wrapper
       style={{
