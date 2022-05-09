@@ -85,7 +85,7 @@ const Modal = ({ setModalActive, modalActive, ListaLinguagens }) => {
           pq menu está á utiliza-lo.
 
         */
-
+        setObjetoLinguagem({});
         if (possuiAtributos(manipulableItem) <= 2) addNewItem(obj);
         else if (
           possuiAtributos(manipulableItem) >= 3 &&
@@ -116,7 +116,19 @@ const Modal = ({ setModalActive, modalActive, ListaLinguagens }) => {
           codigo: OldItem.codigo,
           id: id,
         };
-        addOldItem(obj);
+        if (possuiAtributos(manipulableItem) <= 2) {
+          addOldItem(obj);
+          addManipulableItem(obj);
+        } else if (
+          possuiAtributos(manipulableItem) >= 3 &&
+          !manipulableItem.salvo
+        ) {
+          alert("Salve antes de iniciar outro card");
+          addOldItem(obj);
+        } else {
+          addOldItem(obj);
+          addManipulableItem(obj);
+        }
       }
       setModalActive(false);
     }
@@ -140,6 +152,7 @@ const Modal = ({ setModalActive, modalActive, ListaLinguagens }) => {
   */
   useEffect(() => {
     if (possuiAtributos(OldItem) >= 3) {
+      console.log(OldItem);
       setNome(OldItem.nome);
       setDesc(OldItem.descricao);
       setId(OldItem.id);

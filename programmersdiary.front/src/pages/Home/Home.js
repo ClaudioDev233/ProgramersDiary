@@ -24,15 +24,9 @@ const Home = () => {
     setItemCard(manipulableItem);
   }, [manipulableItem]);
 
-  // insere no contexto o codigo digitado
-  // useEffect(() => {
-  //   if (textCode) {
-  //     addManipulableItem({ ...manipulableItem, codigo: textCode });
-  //   }
-  // }, [textCode]);
-
+  // retirando o comentario talvez resolva o problema do salvamento
   useEffect(() => {
-    manipulableItem.salvo = false;
+    if (manipulableItem.codigo != textCode) manipulableItem.salvo = false;
   }, [textCode]);
 
   // faz um fetch para pegar todas as linguagens do banco de
@@ -46,9 +40,8 @@ const Home = () => {
 
   // caso um card já existente seja aberto, seu codigo irá para o container de texto
   useEffect(() => {
-    if (itemCard.velho) {
-      setTextCode(itemCard.codigo);
-    }
+    if (itemCard.id) setTextCode(itemCard.codigo);
+    else setTextCode("");
   }, [itemCard]);
   return (
     <>

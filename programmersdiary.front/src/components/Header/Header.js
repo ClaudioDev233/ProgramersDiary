@@ -13,14 +13,16 @@ import { pluginsLista, possuiAtributos } from "../../utils/utils";
 const Header = ({ obj, codigo }) => {
   const { manipulableItem, addManipulableItem, allCards, addCards } =
     useContext(ManipulateContext);
-  const [error, setErrors] = useState({});
+  const [error, setErrors] = useState({ err: false });
   const [teste, setTeste] = useState(false);
+  const [code, setCode] = useState(codigo);
+  console.log(manipulableItem);
 
   useEffect(() => {
-    console.log("aqui");
     let identificador;
     let cardIndice;
-    if (manipulableItem.aberto === true) {
+    if (manipulableItem.aberto === true && !error.err) {
+      console.log("salvo");
       let funcaoTest = async () => {
         if (manipulableItem.id) {
           manipulableItem.codigo = codigo;
@@ -36,17 +38,13 @@ const Header = ({ obj, codigo }) => {
           Vai forçar a renderização de todos os componentes que usam esse contexto, assim corrigindo
           o problema do assincrono
         */
+        // try {
         addManipulableItem({
           ...manipulableItem,
           novo: false,
           salvo: true,
           id: identificador ? identificador : manipulableItem.id,
-          codigo: prettier.format(manipulableItem.codigo, {
-            parser: manipulableItem.linguagem.nome,
-            plugins: pluginsLista,
-            jsxSingleQuote: true,
-            bracketSameLine: true,
-          }),
+          codigo: code,
         });
         if (cardIndice >= 0) addCards(allCards);
       };
@@ -54,27 +52,37 @@ const Header = ({ obj, codigo }) => {
     }
   }, [teste]);
 
+  // vai verificar se ha erro no codigo digitado
+  useEffect(() => {
+    if (codigo) {
+      try {
+        console.log(`teste`);
+        setCode(
+          prettier.format(codigo, {
+            parser: manipulableItem.linguagem.nome,
+            plugins: pluginsLista,
+            jsxSingleQuote: true,
+            bracketSameLine: true,
+          })
+        );
+        setErrors({ err: false });
+      } catch (err) {
+        console.log(err);
+        setErrors({ err: err });
+      }
+    }
+  }, [codigo]);
+
   /*Alem de salvar, quando o card for alterado va devolver o codigo ja formatado para home*/
   function save() {
-    try {
-      if (manipulableItem.nome) {
-        const clearCode = prettier.format(codigo, {
-          parser: manipulableItem.linguagem.nome,
-          plugins: pluginsLista,
-          jsxSingleQuote: true,
-          bracketSameLine: true,
-        });
-        // gatilho para invocar o useEffect de cima(é ele quem salva no banco de dados)
-        setTeste((value) => !value);
-        setErrors({ err: false });
-      } else {
-        setErrors({ err: "Crie um card antes de começar a digitar" });
-      }
-    } catch (err) {
-      setErrors({ err: err });
+    // try {
+    if (manipulableItem.nome) {
+      // gatilho para invocar o useEffect de cima(é ele quem salva no banco de dados)
+      setTeste((value) => !value);
+    } else {
+      setErrors({ err: "Crie um card antes de começar a digitar" });
     }
   }
-  console.log(manipulableItem);
   return (
     <>
       <HeaderWrapper>
