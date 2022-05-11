@@ -9,6 +9,8 @@ import CodeMirror from "@uiw/react-codemirror";
 import { oneDark } from "@codemirror/theme-one-dark";
 import { codeLanguages, possuiAtributos } from "../../utils/utils";
 import crud from "../../utils/crud.js";
+import prettier from "prettier";
+import { pluginsLista } from "../../utils/utils";
 
 const Home = () => {
   const { manipulableItem, addManipulableItem } = useContext(ManipulateContext);
@@ -22,13 +24,12 @@ const Home = () => {
     setItemCard(manipulableItem);
   }, [manipulableItem]);
 
-  // insere no contexto o codigo digitado
-  // useEffect(() => {
-  //   if (textCode) {
-  //     addManipulableItem({ ...manipulableItem, codigo: textCode });
-  //   }
-  // }, [textCode]);
+  // retirando o comentario talvez resolva o problema do salvamento
+  useEffect(() => {
+    if (manipulableItem.codigo != textCode) manipulableItem.salvo = false;
+  }, [textCode]);
 
+  // faz um fetch para pegar todas as linguagens do banco de
   useEffect(() => {
     async function getAll() {
       let listaLinguagens = await crud.getAll("linguagem");
@@ -39,9 +40,8 @@ const Home = () => {
 
   // caso um card já existente seja aberto, seu codigo irá para o container de texto
   useEffect(() => {
-    if (possuiAtributos(itemCard) >= 3 && !textCode) {
-      setTextCode(itemCard.codigo);
-    }
+    if (itemCard.id) setTextCode(itemCard.codigo);
+    else setTextCode("");
   }, [itemCard]);
   return (
     <>
@@ -49,7 +49,7 @@ const Home = () => {
         <BlackWrapper>
           <Header obj={itemCard} codigo={textCode}></Header>
           <CodeMirror
-            value={textCode} //{itemCard.codigo ? itemCard.codigo : ""}
+            value={textCode}
             height="64vh"
             width={"100%"}
             onChange={(value, viewUpdate) => {

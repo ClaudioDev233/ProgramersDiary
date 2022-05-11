@@ -12,20 +12,25 @@ import {
   Button,
 } from "./styles";
 import { AiOutlineCheck } from "react-icons/ai";
+
 import { ManipulateContext } from "../../context/ManipulaItem/ManipulateItem";
+import { NewItemContext } from "../../context/NewItem/NewItem";
+import { OldItemContext } from "../../context/OldItem/OldItem";
+
 import prettier from "prettier";
-import { pluginsLista, possuiAtributos, linguagens } from "../../utils/utils";
+import { pluginsLista, possuiAtributos } from "../../utils/utils";
 
 const Modal = ({ setModalActive, modalActive, ListaLinguagens }) => {
-  const { manipulableItem, addManipulableItem } = useContext(ManipulateContext);
+  const { manipulableItem, addManipulableItem, allCards, addCards } =
+    useContext(ManipulateContext);
+  const { addNewItem } = useContext(NewItemContext);
+  const { OldItem, addOldItem } = useContext(OldItemContext);
   const [nome, setNome] = useState("");
   const [desc, setDesc] = useState("");
   const [id, setId] = useState("");
   const [language, setLanguage] = useState("");
   const [code, setCode] = useState("");
   const [label, setLabel] = useState("");
-  const [newItem, setNewItem] = useState({});
-  const [oldItem, setOldItem] = useState({});
   const [errors, setErros] = useState({});
   const [objetoLinguagem, setObjetoLinguagem] = useState({});
 
@@ -72,30 +77,58 @@ const Modal = ({ setModalActive, modalActive, ListaLinguagens }) => {
           }),
           aberto: true,
           novo: true,
+          salvo: false,
         };
-        setNewItem(obj);
-        // força a renderização
-        addManipulableItem(obj);
+
+        /*
+          Quando um novo item for criado, utilizaremos o contexto de newItem, esse contexto vai forçar a renderização do menu, 
+          pq menu está á utiliza-lo.
+
+        */
+        setObjetoLinguagem({});
+        if (possuiAtributos(manipulableItem) <= 2) addNewItem(obj);
+        else if (
+          possuiAtributos(manipulableItem) >= 3 &&
+          !manipulableItem.salvo
+        )
+          alert("Salve antes de iniciar outro card");
+        else {
+          addNewItem(obj);
+        }
       }
       // caso exista
       else {
         let obj = {
           aberto: true,
           novo: false,
+          velho: true,
+          salvo: true,
           descricao: desc,
           nome: nome,
           linguagem:
             possuiAtributos(objetoLinguagem) > 2
               ? objetoLinguagem
-              : manipulableItem.linguagem,
+              : OldItem.linguagem,
           linguagemId:
             possuiAtributos(objetoLinguagem) > 2
               ? objetoLinguagem.id
-              : manipulableItem.linguagem.id,
+              : OldItem.linguagem.id,
+          codigo: OldItem.codigo,
+          id: id,
         };
-
-        setOldItem(obj);
-        addManipulableItem({ ...manipulableItem, ...obj });
+        if (possuiAtributos(manipulableItem) <= 2) {
+          addOldItem(obj);
+          addManipulableItem(obj);
+        } else if (
+          possuiAtributos(manipulableItem) >= 3 &&
+          !manipulableItem.salvo
+        ) {
+          alert("Salve antes de iniciar outro card");
+          addOldItem(obj);
+        } else {
+          addOldItem(obj);
+          addManipulableItem(obj);
+        }
       }
       setModalActive(false);
     }
@@ -110,40 +143,24 @@ const Modal = ({ setModalActive, modalActive, ListaLinguagens }) => {
       setLanguage("");
       setCode("");
       setLabel("");
-      // dava certo mas isso aqui causa erro
-      // addManipulableItem({});
     }
   }, [modalActive]);
 
-  // atribui valor ao manipulableItem, quando um item existente for aberto para podermos mexer
+  /*
+    Quando abrimos um card já existente, será esse effect que pegará suas informaçoes e colocará no modal,
+    assim o preeenchendo
+  */
   useEffect(() => {
-    if (possuiAtributos(manipulableItem) >= 3 && !manipulableItem.novo) {
-      setNome(manipulableItem.nome);
-      setDesc(manipulableItem.descricao);
-      setId(manipulableItem.id);
-      setLanguage(manipulableItem.linguagem.nome);
-      setCode(manipulableItem.codigo);
-      setLabel(manipulableItem.linguagem);
+    if (possuiAtributos(OldItem) >= 3) {
+      console.log(OldItem);
+      setNome(OldItem.nome);
+      setDesc(OldItem.descricao);
+      setId(OldItem.id);
+      setLanguage(OldItem.linguagem.nome);
+      setCode(OldItem.codigo);
+      setLabel(OldItem.linguagem);
     }
-    return () => {
-      manipulableItem.aberto = false;
-    };
-  }, [manipulableItem]);
-
-  // caso crie um novo item, o antigo sera "fechado"
-  useEffect(() => {
-    if (possuiAtributos(manipulableItem) >= 1) {
-      newItem.aberto = true;
-      oldItem.aberto = false;
-    }
-  }, [newItem]);
-  // faz o inverso do efeito de cima"
-  useEffect(() => {
-    if (possuiAtributos(manipulableItem) >= 1) {
-      newItem.aberto = false;
-      oldItem.aberto = true;
-    }
-  }, [oldItem]);
+  }, [OldItem]);
 
   return (
     <>

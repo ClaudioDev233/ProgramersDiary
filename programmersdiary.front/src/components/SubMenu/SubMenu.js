@@ -9,10 +9,13 @@ import {
 } from "./styles";
 import url from "../../assets/teste.png";
 import { ManipulateContext } from "../../context/ManipulaItem/ManipulateItem";
-import crud from "../../utils/crud";
+import { OldItemContext } from "../../context/OldItem/OldItem";
+
+// import crud from "../../utils/crud";
 const SubMenu = ({ item, setModalActive }) => {
   const { manipulableItem, addManipulableItem, deleteItem } =
     useContext(ManipulateContext);
+  const { OldItem, addOldItem } = useContext(OldItemContext);
   return (
     <>
       <WrapperSubMenu>
@@ -50,7 +53,8 @@ const SubMenu = ({ item, setModalActive }) => {
             <Button
               onClick={() => {
                 setModalActive((opt) => !opt);
-                addManipulableItem(item);
+                // addManipulableItem(item);
+                addOldItem(item);
               }}
             >
               Abrir
