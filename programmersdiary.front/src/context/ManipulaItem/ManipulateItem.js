@@ -1,4 +1,4 @@
-import React, { createContext, useState } from "react";
+import React, { createContext, useMemo, useState } from "react";
 import crud from "../../utils/crud";
 export const ManipulateContext = createContext([]);
 
@@ -18,7 +18,7 @@ const ManipulateProvider = ({ children }) => {
     setAddCards(cardsRestantes);
   }
 
-  return (
+  return useMemo(() => (
     <ManipulateContext.Provider
       value={{
         manipulableItem: manipulableItemHook,
@@ -30,7 +30,7 @@ const ManipulateProvider = ({ children }) => {
     >
       {children}
     </ManipulateContext.Provider>
-  );
+  ));
 };
 
 export default ManipulateProvider;

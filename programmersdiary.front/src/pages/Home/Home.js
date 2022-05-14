@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useContext, useEffect, useMemo } from "react";
 import Menu from "../../components/Menu/Menu";
 import Wrapper from "../../components/Wrapper/Wrapper";
 import { BlackWrapper } from "./styles";
@@ -9,11 +9,10 @@ import CodeMirror from "@uiw/react-codemirror";
 import { oneDark } from "@codemirror/theme-one-dark";
 import { codeLanguages, possuiAtributos } from "../../utils/utils";
 import crud from "../../utils/crud.js";
-import prettier from "prettier";
-import { pluginsLista } from "../../utils/utils";
 
 const Home = () => {
   const { manipulableItem, addManipulableItem } = useContext(ManipulateContext);
+  const [itemManipulavel, setManipulavelItem] = useState({});
   const [itemCard, setItemCard] = useState({});
   const [textCode, setTextCode] = useState("");
   const [modalActive, setModalActive] = useState(false);
@@ -21,10 +20,9 @@ const Home = () => {
 
   // defini no cabecalho a linguagem e monta o objeto card
   useEffect(() => {
-    setItemCard(manipulableItem);
-  }, [manipulableItem]);
+    setItemCard(itemManipulavel);
+  }, [itemManipulavel]);
 
-  // retirando o comentario talvez resolva o problema do salvamento
   useEffect(() => {
     if (manipulableItem.codigo != textCode) manipulableItem.salvo = false;
   }, [textCode]);
@@ -43,11 +41,16 @@ const Home = () => {
     if (itemCard.id) setTextCode(itemCard.codigo);
     else setTextCode("");
   }, [itemCard]);
-  return (
+
+  return useMemo(() => (
     <>
       <Wrapper>
         <BlackWrapper>
-          <Header obj={itemCard} codigo={textCode}></Header>
+          <Header
+            itemManipulavel={itemManipulavel}
+            setManipulavelItem={setManipulavelItem}
+            codigo={textCode}
+          ></Header>
           <CodeMirror
             value={textCode}
             height="64vh"
@@ -67,12 +70,20 @@ const Home = () => {
             setModalActive={setModalActive}
             modalActive={modalActive}
             ListaLinguagens={linguagens}
+            setManipulavelItem={setManipulavelItem}
+            itemManipulavel={itemManipulavel}
           ></Modal>
         </BlackWrapper>
-        <Menu setModalActive={setModalActive} openCard={itemCard}></Menu>
+        <Menu
+          setModalActive={setModalActive}
+          openCard={itemCard}
+          salvo={itemManipulavel.salvo == true ? itemManipulavel : {}}
+          setManipulavelItem={setManipulavelItem}
+          itemManipulavel={itemManipulavel}
+        ></Menu>
       </Wrapper>
     </>
-  );
+  ));
 };
 
 export default Home;

@@ -1,7 +1,7 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useMemo, useState } from "react";
 import { HeaderWrapper, Title, Save } from "./styles";
 import { AiOutlineSave } from "react-icons/ai";
-import { ManipulateContext } from "../../context/ManipulaItem/ManipulateItem";
+// import { ManipulateContext } from "../../context/ManipulaItem/ManipulateItem";
 import prettier from "prettier";
 import Error from "../Error/Error";
 import crud from "../../utils/crud";
@@ -10,43 +10,45 @@ import { pluginsLista, possuiAtributos } from "../../utils/utils";
 /*
   o header vai ser responsavel por salvar o conteudo que está no contexto manipulado.
 */
-const Header = ({ obj, codigo }) => {
-  const { manipulableItem, addManipulableItem, allCards, addCards } =
-    useContext(ManipulateContext);
+const Header = ({ itemManipulavel, setManipulavelItem, codigo }) => {
+  // const { itemManipulavel, additemManipulavel, allCards, addCards } =
+  //   useContext(ManipulateContext);
   const [error, setErrors] = useState({ err: false });
   const [teste, setTeste] = useState(false);
   const [code, setCode] = useState(codigo);
-  console.log(manipulableItem);
-
+  // const [cards, setCards] = useState([]);
+  // console.log(itemManipulavel);
+  // console.log(cards);
+  console.log("ola");
   useEffect(() => {
     let identificador;
     let cardIndice;
-    if (manipulableItem.aberto === true && !error.err) {
+    if (itemManipulavel.aberto === true && !error.err) {
       console.log("salvo");
       let funcaoTest = async () => {
-        if (manipulableItem.id) {
-          manipulableItem.codigo = codigo;
-          crud.atualizar(manipulableItem.id, manipulableItem);
+        if (itemManipulavel.id) {
+          itemManipulavel.codigo = codigo;
+          crud.atualizar(itemManipulavel.id, itemManipulavel);
         } else {
-          manipulableItem.codigo = codigo;
-          identificador = await crud.inserir(manipulableItem);
+          itemManipulavel.codigo = codigo;
+          identificador = await crud.inserir(itemManipulavel);
           // sendo novo vai localizar o card
-          cardIndice = allCards.findIndex((card) => card.id === "");
-          allCards[cardIndice].id = identificador;
+          // cardIndice = allCards.findIndex((card) => card.id === "");
+          // allCards[cardIndice].id = identificador;
         }
         /*
           Vai forçar a renderização de todos os componentes que usam esse contexto, assim corrigindo
           o problema do assincrono
         */
         // try {
-        addManipulableItem({
-          ...manipulableItem,
+        setManipulavelItem({
+          ...itemManipulavel,
           novo: false,
           salvo: true,
-          id: identificador ? identificador : manipulableItem.id,
+          id: identificador ? identificador : itemManipulavel.id,
           codigo: code,
         });
-        if (cardIndice >= 0) addCards(allCards);
+        // if (cardIndice >= 0) addCards(allCards);
       };
       funcaoTest();
     }
@@ -59,7 +61,7 @@ const Header = ({ obj, codigo }) => {
         console.log(`teste`);
         setCode(
           prettier.format(codigo, {
-            parser: manipulableItem.linguagem.nome,
+            parser: itemManipulavel.linguagem.nome,
             plugins: pluginsLista,
             jsxSingleQuote: true,
             bracketSameLine: true,
@@ -76,7 +78,7 @@ const Header = ({ obj, codigo }) => {
   /*Alem de salvar, quando o card for alterado va devolver o codigo ja formatado para home*/
   function save() {
     // try {
-    if (manipulableItem.nome) {
+    if (itemManipulavel.nome) {
       // gatilho para invocar o useEffect de cima(é ele quem salva no banco de dados)
       setTeste((value) => !value);
     } else {
@@ -89,8 +91,8 @@ const Header = ({ obj, codigo }) => {
         <Title>
           {error.err ? (
             <Error texto={error.err} />
-          ) : obj.linguagem ? (
-            obj.linguagem.labelLinguagem
+          ) : itemManipulavel.linguagem ? (
+            itemManipulavel.linguagem.labelLinguagem
           ) : null}
         </Title>
         <Save onClick={save}>
@@ -101,4 +103,4 @@ const Header = ({ obj, codigo }) => {
   );
 };
 
-export default Header;
+export default React.memo(Header);

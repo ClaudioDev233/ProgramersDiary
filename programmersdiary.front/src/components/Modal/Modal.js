@@ -20,9 +20,15 @@ import { OldItemContext } from "../../context/OldItem/OldItem";
 import prettier from "prettier";
 import { pluginsLista, possuiAtributos } from "../../utils/utils";
 
-const Modal = ({ setModalActive, modalActive, ListaLinguagens }) => {
-  const { manipulableItem, addManipulableItem, allCards, addCards } =
-    useContext(ManipulateContext);
+const Modal = ({
+  setModalActive,
+  modalActive,
+  ListaLinguagens,
+  setManipulavelItem,
+  itemManipulavel,
+}) => {
+  // const { manipulableItem, addManipulableItem, allCards, addCards } =
+  //   useContext(ManipulateContext);
   const { addNewItem } = useContext(NewItemContext);
   const { OldItem, addOldItem } = useContext(OldItemContext);
   const [nome, setNome] = useState("");
@@ -38,7 +44,7 @@ const Modal = ({ setModalActive, modalActive, ListaLinguagens }) => {
   function handleClick(e) {
     if (e.currentTarget == e.target) {
       setModalActive(false);
-      if (!manipulableItem.aberto) addManipulableItem({});
+      if (!itemManipulavel.aberto) setManipulavelItem({});
     }
   }
 
@@ -86,10 +92,10 @@ const Modal = ({ setModalActive, modalActive, ListaLinguagens }) => {
 
         */
         setObjetoLinguagem({});
-        if (possuiAtributos(manipulableItem) <= 2) addNewItem(obj);
+        if (possuiAtributos(itemManipulavel) <= 2) addNewItem(obj);
         else if (
-          possuiAtributos(manipulableItem) >= 3 &&
-          !manipulableItem.salvo
+          possuiAtributos(itemManipulavel) >= 3 &&
+          !itemManipulavel.salvo
         )
           alert("Salve antes de iniciar outro card");
         else {
@@ -116,18 +122,18 @@ const Modal = ({ setModalActive, modalActive, ListaLinguagens }) => {
           codigo: OldItem.codigo,
           id: id,
         };
-        if (possuiAtributos(manipulableItem) <= 2) {
+        if (possuiAtributos(itemManipulavel) <= 2) {
           addOldItem(obj);
-          addManipulableItem(obj);
+          setManipulavelItem(obj);
         } else if (
-          possuiAtributos(manipulableItem) >= 3 &&
-          !manipulableItem.salvo
+          possuiAtributos(itemManipulavel) >= 3 &&
+          !itemManipulavel.salvo
         ) {
           alert("Salve antes de iniciar outro card");
           addOldItem(obj);
         } else {
           addOldItem(obj);
-          addManipulableItem(obj);
+          setManipulavelItem(obj);
         }
       }
       setModalActive(false);

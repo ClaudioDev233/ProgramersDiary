@@ -12,7 +12,7 @@ import { ManipulateContext } from "../../context/ManipulaItem/ManipulateItem";
 import { OldItemContext } from "../../context/OldItem/OldItem";
 
 // import crud from "../../utils/crud";
-const SubMenu = ({ item, setModalActive }) => {
+const SubMenu = ({ item, setModalActive, setDelete }) => {
   const { manipulableItem, addManipulableItem, deleteItem } =
     useContext(ManipulateContext);
   const { OldItem, addOldItem } = useContext(OldItemContext);
@@ -43,7 +43,8 @@ const SubMenu = ({ item, setModalActive }) => {
           <ListItem data-submenu="submenu">
             <Button
               onClick={() => {
-                deleteItem(item.id);
+                // deleteItem(item.id);
+                setDelete(item);
               }}
             >
               Excluir

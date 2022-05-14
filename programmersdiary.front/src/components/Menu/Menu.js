@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useEffect, useState, useContext, useMemo } from "react";
 import Card from "../Card/Card";
 import {
   WrapperMenu,
@@ -16,30 +16,35 @@ import CardSkeleton from "../CardSkeleton/CardSkeleton";
 import { ManipulateContext } from "../../context/ManipulaItem/ManipulateItem";
 import { NewItemContext } from "../../context/NewItem/NewItem";
 import { OldItemContext } from "../../context/OldItem/OldItem";
+import { possuiAtributos } from "../../utils/utils";
 
-const Menu = ({ setModalActive, openCard }) => {
-  const { manipulableItem, addManipulableItem, allCards, addCards } =
-    useContext(ManipulateContext);
+const Menu = ({
+  setModalActive,
+  openCard,
+  salvo,
+  setManipulavelItem,
+  itemManipulavel,
+}) => {
+  // const { manipulableItem, addManipulableItem, allCards, addCards } =
+  //   useContext(ManipulateContext);
   const { newItem } = useContext(NewItemContext);
   const { OldItem } = useContext(OldItemContext);
-
   const [search, setSearch] = useState("");
   const [found, setFound] = useState([]);
   const [result, setResult] = useState("");
   const [menuAtivo, setMenuAtivo] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [cards, setCards] = useState([]);
+  const [deleteItem, setDelete] = useState({});
+  console.log("aqui");
 
   // busca os dados na api
   useEffect(() => {
     const fetchdata = async () => {
       const cards = await crud.getAll("card");
-      addCards(cards);
+      setCards(cards);
       setLoading(false);
       console.log(cards);
-      if (cards.status == 404) {
-        addCards([]);
-        setLoading(false);
-      }
     };
     fetchdata();
   }, []);
@@ -48,9 +53,9 @@ const Menu = ({ setModalActive, openCard }) => {
   useEffect(() => {
     let array_dados = [];
     let array_filtrado = [];
-    const dados = allCards.filter((elem) => elem.labelLanguage === search);
-    const dados2 = allCards.filter((elem) => elem.nome === search);
-    const dados3 = allCards.filter((elem) => elem.nome.indexOf(search) !== -1);
+    const dados = cards.filter((elem) => elem.labelLanguage === search);
+    const dados2 = cards.filter((elem) => elem.nome === search);
+    const dados3 = cards.filter((elem) => elem.nome.indexOf(search) !== -1);
     array_dados = [...dados, ...dados2, ...dados3];
     // filtra os dados
     if (array_dados.length > 0) {
@@ -71,30 +76,51 @@ const Menu = ({ setModalActive, openCard }) => {
 
   // quando um card tiver seu nome alterado, vamos forcar a renderizacao para ser atualizado em tempo real
   useEffect(() => {
-    let card = allCards.find((card) => card.id === openCard.id);
+    let card = cards.find((card) => card.id === openCard.id);
     if (card && !card.novo) {
       card.nome = openCard.nome;
       card.descricao = openCard.descricao;
       card.linguagem = openCard.linguagem;
     }
-    addCards([...allCards]);
+    // addCards([...allCards]);
+    setCards([...cards]);
     // eslint-disable-next-line
   }, [openCard]);
 
   // adiciona o card novo a lista no menu
   useEffect(() => {
     if (newItem.novo === true) {
-      addCards([...allCards, newItem]);
+      setCards([...cards, newItem]);
+      setManipulavelItem(newItem);
       /*
         Como o novo card já foi criado, agr vamos atribui-lo ao contexto de manipulavel para podermos utiliza-lo
       */
-      addManipulableItem(newItem);
+      // addManipulableItem(newItem);
     }
   }, [newItem]);
 
   useEffect(() => {
     // if (OldItem.novo === false) addManipulableItem(OldItem);
   }, [OldItem]);
+
+  // sendo um card novo, vamos acha-lo na lista e vamos atribuir seu id  para assim permanecer "aberto"
+  useEffect(() => {
+    let cardIndice = cards.findIndex((card) => card.id === "");
+    if (cardIndice >= 0) {
+      cards[cardIndice].id = salvo.id;
+      setCards([...cards]);
+    }
+  }, [salvo.salvo === true]);
+
+  // exclui um card
+  useEffect(() => {
+    let excluir = () => {
+      crud.excluir(deleteItem.id);
+      let cardsRestantes = cards.filter((card) => card.id !== deleteItem.id);
+      setCards(cardsRestantes);
+    };
+    if (possuiAtributos(deleteItem) > 0) excluir();
+  }, [deleteItem]);
 
   return (
     <>
@@ -122,15 +148,17 @@ const Menu = ({ setModalActive, openCard }) => {
           />
           {!search &&
             !loading &&
-            allCards.map((card) => (
+            cards.map((card) => (
               <Card
                 key={crypto.randomUUID()}
                 card={card}
                 setModalActive={setModalActive}
+                color={card.id === itemManipulavel.id ? "white" : "black"}
+                setDelete={setDelete}
               />
             ))}
           {!search &&
-            allCards.length <= 0 &&
+            cards.length <= 0 &&
             loading &&
             [1, 2, 3, 4].map((id) => (
               <CardSkeleton key={crypto.randomUUID()} />
@@ -158,4 +186,4 @@ const Menu = ({ setModalActive, openCard }) => {
   );
 };
 
-export default Menu;
+export default React.memo(Menu);
