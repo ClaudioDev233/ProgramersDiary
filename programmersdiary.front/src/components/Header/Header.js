@@ -46,14 +46,14 @@ const Header = ({ itemManipulavel, setManipulavelItem, codigo }) => {
           novo: false,
           salvo: true,
           id: identificador ? identificador : itemManipulavel.id,
-          codigo: code,
+          codigo: codigo,
         });
         // if (cardIndice >= 0) addCards(allCards);
       };
       funcaoTest();
     }
   }, [teste]);
-
+  console.log(code);
   // vai verificar se ha erro no codigo digitado
   useEffect(() => {
     if (codigo) {

@@ -80,6 +80,7 @@ const Home = () => {
           salvo={itemManipulavel.salvo == true ? itemManipulavel : {}}
           setManipulavelItem={setManipulavelItem}
           itemManipulavel={itemManipulavel}
+          setTextCode={setTextCode}
         ></Menu>
       </Wrapper>
     </>

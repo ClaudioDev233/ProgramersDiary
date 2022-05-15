@@ -3,8 +3,10 @@ import { WrapperInfo, Wrapper, Language, Info, Name } from "./styles";
 import SubMenu from "../SubMenu/SubMenu";
 import { ManipulateContext } from "../../context/ManipulaItem/ManipulateItem";
 
-const Card = ({ card, setModalActive, color, setDelete }) => {
-  console.log(`${card.id} x ${itemManipulavel.id}`);
+const Card = ({ card, setModalActive, color, setDelete, itemManipulavel }) => {
+  // console.log(`${card.id} x ${itemManipulavel.id}`);
+  // console.log(card);
+  // console.log(itemManipulavel);
   return (
     <Wrapper
       style={{

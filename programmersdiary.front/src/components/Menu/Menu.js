@@ -24,6 +24,7 @@ const Menu = ({
   salvo,
   setManipulavelItem,
   itemManipulavel,
+  setTextCode,
 }) => {
   // const { manipulableItem, addManipulableItem, allCards, addCards } =
   //   useContext(ManipulateContext);
@@ -37,7 +38,7 @@ const Menu = ({
   const [cards, setCards] = useState([]);
   const [deleteItem, setDelete] = useState({});
   console.log("aqui");
-
+  console.log(itemManipulavel);
   // busca os dados na api
   useEffect(() => {
     const fetchdata = async () => {
@@ -105,12 +106,16 @@ const Menu = ({
 
   // sendo um card novo, vamos acha-lo na lista e vamos atribuir seu id  para assim permanecer "aberto"
   useEffect(() => {
+    console.log("apagando");
+
     let cardIndice = cards.findIndex((card) => card.id === "");
-    if (cardIndice >= 0) {
+    if (cardIndice >= 0 && salvo.salvo === true) {
+      setTextCode("");
       cards[cardIndice].id = salvo.id;
       setCards([...cards]);
+      console.log(salvo);
     }
-  }, [salvo.salvo === true]);
+  }, [salvo]);
 
   // exclui um card
   useEffect(() => {
@@ -121,6 +126,7 @@ const Menu = ({
     };
     if (possuiAtributos(deleteItem) > 0) excluir();
   }, [deleteItem]);
+  console.log(cards);
 
   return (
     <>
@@ -155,6 +161,7 @@ const Menu = ({
                 setModalActive={setModalActive}
                 color={card.id === itemManipulavel.id ? "white" : "black"}
                 setDelete={setDelete}
+                itemManipulavel={itemManipulavel}
               />
             ))}
           {!search &&
