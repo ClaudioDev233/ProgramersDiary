@@ -157,16 +157,12 @@ const Modal = ({
   }, [OldItem]);
   // faz um reset no modal quando for fechado
   useEffect(() => {
-    // if (limpar) {
     setNome("");
     setDesc("");
     setId("");
     setLanguage("");
     setCode("");
     setLabel("");
-    // setLimpar(false);
-    console.log("limpando");
-    // }
     addOldItem({});
   }, [limpar]);
   return (

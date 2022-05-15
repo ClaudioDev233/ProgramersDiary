@@ -4,6 +4,7 @@ import SubMenu from "../SubMenu/SubMenu";
 import { ManipulateContext } from "../../context/ManipulaItem/ManipulateItem";
 
 const Card = ({ card, setModalActive, color, setDelete }) => {
+  console.log(`${card.id} x ${itemManipulavel.id}`);
   return (
     <Wrapper
       style={{
