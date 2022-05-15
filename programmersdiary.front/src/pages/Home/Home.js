@@ -15,7 +15,7 @@ const Home = () => {
   const [textCode, setTextCode] = useState("");
   const [modalActive, setModalActive] = useState(false);
   const [linguagens, setLinguagens] = useState([]);
-
+  console.log(itemManipulavel.codigo);
   // defini no cabecalho a linguagem e monta o objeto card
   useEffect(() => {
     setItemCard(itemManipulavel);
@@ -24,7 +24,6 @@ const Home = () => {
   useEffect(() => {
     if (itemManipulavel.codigo != textCode) {
       itemManipulavel.salvo = false;
-      console.log(itemManipulavel);
     }
   }, [textCode]);
 

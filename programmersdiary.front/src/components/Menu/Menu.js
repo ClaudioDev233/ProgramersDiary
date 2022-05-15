@@ -109,6 +109,18 @@ const Menu = ({
     }
   }, [salvo]);
 
+  useEffect(() => {
+    console.log("asdasdasd");
+    let cardIndice = cards.findIndex((card) => card.id === itemManipulavel.id);
+    console.log(cardIndice);
+    if (cardIndice >= 0 && salvo.salvo === true) {
+      setTextCode(salvo.codigo);
+      cards[cardIndice].codigo = salvo.codigo;
+      cards[cardIndice].id = salvo.id;
+      setCards([...cards]);
+    }
+  }, [salvo]);
+
   // exclui um card
   useEffect(() => {
     let excluir = () => {

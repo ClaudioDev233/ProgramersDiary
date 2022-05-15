@@ -18,7 +18,6 @@ const Header = ({ itemManipulavel, setManipulavelItem, codigo }) => {
   useEffect(() => {
     let identificador;
     if (itemManipulavel.aberto === true && !error.err) {
-      console.log("salvo");
       let funcaoTest = async () => {
         if (itemManipulavel.id) {
           itemManipulavel.codigo = codigo;
@@ -27,12 +26,13 @@ const Header = ({ itemManipulavel, setManipulavelItem, codigo }) => {
           itemManipulavel.codigo = codigo;
           identificador = await crud.inserir(itemManipulavel);
         }
-        
+
         toast.success("salvando", {
           autoClose: 200,
           theme: "dark",
           delay: 100,
         });
+
         /*
           Vai forçar a renderização de todos os componentes que usam esse contexto, assim corrigindo
           o problema do assincrono
@@ -44,6 +44,9 @@ const Header = ({ itemManipulavel, setManipulavelItem, codigo }) => {
           id: identificador ? identificador : itemManipulavel.id,
           codigo: codigo,
         });
+
+        console.log(itemManipulavel.codigo);
+        console.log(codigo);
       };
       funcaoTest();
     }
