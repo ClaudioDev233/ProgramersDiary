@@ -100,7 +100,6 @@ const Menu = ({
   }, [newItem]);
 
   useEffect(() => {
-    // if (OldItem.novo === false) addManipulableItem(OldItem);
     if (OldItem.novo === false) setManipulavelItem(OldItem);
   }, [OldItem]);
 

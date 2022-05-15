@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useLayoutEffect, useState } from "react";
 import InputComponente from "../Input/Input";
 import TextArea from "../TextArea/TextArea";
 import Select from "../Select/";
@@ -125,44 +125,26 @@ const Modal = ({
         };
         if (possuiAtributos(itemManipulavel) <= 2) {
           addOldItem(obj);
-          console.log("aquifs");
         } else if (
           possuiAtributos(itemManipulavel) >= 3 &&
           !itemManipulavel.salvo
         ) {
           alert("Salve antes de iniciar outro card");
-          // setStandBy(obj);
-          console.log(obj);
         } else {
           addOldItem(obj);
-          console.log("ola mundo");
         }
       }
       setModalActive(false);
-      // setTimeout(() => {
-      setLimpar(true);
-      console.log("Limpando");
-      // }, 1000);
+      setLimpar((v) => !v);
     }
   }
-
-  // faz um reset no modal quando for aberto
-  useEffect(() => {
-    if (limpar) {
-      setNome("");
-      setDesc("");
-      setId("");
-      setLanguage("");
-      setCode("");
-      setLabel("");
-    }
-  }, [limpar]);
 
   /*
     Quando abrimos um card já existente, será esse effect que pegará suas informaçoes e colocará no modal,
     assim o preeenchendo
   */
-  useEffect(() => {
+  useLayoutEffect(() => {
+    console.log(OldItem);
     if (possuiAtributos(OldItem) >= 3) {
       console.log(OldItem);
       setNome(OldItem.nome);
@@ -173,7 +155,20 @@ const Modal = ({
       setLabel(OldItem.linguagem);
     }
   }, [OldItem]);
-
+  // faz um reset no modal quando for fechado
+  useEffect(() => {
+    // if (limpar) {
+    setNome("");
+    setDesc("");
+    setId("");
+    setLanguage("");
+    setCode("");
+    setLabel("");
+    // setLimpar(false);
+    console.log("limpando");
+    // }
+    addOldItem({});
+  }, [limpar]);
   return (
     <>
       {modalActive && (
@@ -214,6 +209,14 @@ const Modal = ({
                     }}
                     error={errors.language}
                   ></Select>
+                  <button
+                    onClick={(e) => {
+                      e.preventDefault();
+                      setLimpar((v) => !v);
+                    }}
+                  >
+                    teste
+                  </button>
                 </Container2>
               </ContainerMestre>
               <Button>
@@ -227,4 +230,4 @@ const Modal = ({
   );
 };
 
-export default Modal;
+export default React.memo(Modal);
