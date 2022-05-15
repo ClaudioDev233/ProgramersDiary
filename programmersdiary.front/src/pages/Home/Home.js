@@ -11,7 +11,7 @@ import { codeLanguages, possuiAtributos } from "../../utils/utils";
 import crud from "../../utils/crud.js";
 
 const Home = () => {
-  const { manipulableItem, addManipulableItem } = useContext(ManipulateContext);
+  // const { manipulableItem, addManipulableItem } = useContext(ManipulateContext);
   const [itemManipulavel, setManipulavelItem] = useState({});
   const [itemCard, setItemCard] = useState({});
   const [textCode, setTextCode] = useState("");
@@ -24,7 +24,10 @@ const Home = () => {
   }, [itemManipulavel]);
 
   useEffect(() => {
-    if (itemManipulavel.codigo != textCode) itemManipulavel.salvo = false;
+    if (itemManipulavel.codigo != textCode) {
+      itemManipulavel.salvo = false;
+      console.log(itemManipulavel);
+    }
   }, [textCode]);
 
   // faz um fetch para pegar todas as linguagens do banco de

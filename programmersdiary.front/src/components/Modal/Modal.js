@@ -155,6 +155,7 @@ const Modal = ({
       setLabel(OldItem.linguagem);
     }
   }, [OldItem]);
+
   // faz um reset no modal quando for fechado
   useEffect(() => {
     setNome("");

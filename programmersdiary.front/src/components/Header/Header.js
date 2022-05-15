@@ -11,18 +11,12 @@ import { pluginsLista, possuiAtributos } from "../../utils/utils";
   o header vai ser responsavel por salvar o conteudo que está no contexto manipulado.
 */
 const Header = ({ itemManipulavel, setManipulavelItem, codigo }) => {
-  // const { itemManipulavel, additemManipulavel, allCards, addCards } =
-  //   useContext(ManipulateContext);
   const [error, setErrors] = useState({ err: false });
   const [teste, setTeste] = useState(false);
   const [code, setCode] = useState(codigo);
-  // const [cards, setCards] = useState([]);
-  // console.log(itemManipulavel);
-  // console.log(cards);
-  console.log("ola");
+
   useEffect(() => {
     let identificador;
-    let cardIndice;
     if (itemManipulavel.aberto === true && !error.err) {
       console.log("salvo");
       let funcaoTest = async () => {
@@ -32,15 +26,11 @@ const Header = ({ itemManipulavel, setManipulavelItem, codigo }) => {
         } else {
           itemManipulavel.codigo = codigo;
           identificador = await crud.inserir(itemManipulavel);
-          // sendo novo vai localizar o card
-          // cardIndice = allCards.findIndex((card) => card.id === "");
-          // allCards[cardIndice].id = identificador;
         }
         /*
           Vai forçar a renderização de todos os componentes que usam esse contexto, assim corrigindo
           o problema do assincrono
         */
-        // try {
         setManipulavelItem({
           ...itemManipulavel,
           novo: false,
@@ -48,17 +38,15 @@ const Header = ({ itemManipulavel, setManipulavelItem, codigo }) => {
           id: identificador ? identificador : itemManipulavel.id,
           codigo: codigo,
         });
-        // if (cardIndice >= 0) addCards(allCards);
       };
       funcaoTest();
     }
   }, [teste]);
-  console.log(code);
+
   // vai verificar se ha erro no codigo digitado
   useEffect(() => {
     if (codigo) {
       try {
-        console.log(`teste`);
         setCode(
           prettier.format(codigo, {
             parser: itemManipulavel.linguagem.nome,
@@ -75,7 +63,7 @@ const Header = ({ itemManipulavel, setManipulavelItem, codigo }) => {
     }
   }, [codigo]);
 
-  /*Alem de salvar, quando o card for alterado va devolver o codigo ja formatado para home*/
+    /*Alem de salvar, quando o card for alterado va devolver o codigo ja formatado para home*/
   function save() {
     // try {
     if (itemManipulavel.nome) {
@@ -85,6 +73,8 @@ const Header = ({ itemManipulavel, setManipulavelItem, codigo }) => {
       setErrors({ err: "Crie um card antes de começar a digitar" });
     }
   }
+  console.log(itemManipulavel);
+
   return (
     <>
       <HeaderWrapper>

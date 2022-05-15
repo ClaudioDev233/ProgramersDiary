@@ -37,15 +37,13 @@ const Menu = ({
   const [loading, setLoading] = useState(true);
   const [cards, setCards] = useState([]);
   const [deleteItem, setDelete] = useState({});
-  console.log("aqui");
-  console.log(itemManipulavel);
+
   // busca os dados na api
   useEffect(() => {
     const fetchdata = async () => {
       const cards = await crud.getAll("card");
       setCards(cards);
       setLoading(false);
-      console.log(cards);
     };
     fetchdata();
   }, []);
@@ -72,7 +70,6 @@ const Menu = ({
       setResult("Nada achado...");
     }
     // eslint-disable-next-line
-    // antes aqui tinha o allcards, talvez tenha que recolocar
   }, [search]);
 
   // quando um card tiver seu nome alterado, vamos forcar a renderizacao para ser atualizado em tempo real
@@ -83,7 +80,6 @@ const Menu = ({
       card.descricao = openCard.descricao;
       card.linguagem = openCard.linguagem;
     }
-    // addCards([...allCards]);
     setCards([...cards]);
     // eslint-disable-next-line
   }, [openCard]);
@@ -91,12 +87,11 @@ const Menu = ({
   // adiciona o card novo a lista no menu
   useEffect(() => {
     if (newItem.novo === true) {
-      setCards([...cards, newItem]);
-      setManipulavelItem(newItem);
       /*
         Como o novo card já foi criado, agr vamos atribui-lo ao contexto de manipulavel para podermos utiliza-lo
       */
-      // addManipulableItem(newItem);
+      setCards([...cards, newItem]);
+      setManipulavelItem(newItem);
     }
   }, [newItem]);
 
@@ -106,14 +101,11 @@ const Menu = ({
 
   // sendo um card novo, vamos acha-lo na lista e vamos atribuir seu id  para assim permanecer "aberto"
   useEffect(() => {
-    console.log("apagando");
-
     let cardIndice = cards.findIndex((card) => card.id === "");
     if (cardIndice >= 0 && salvo.salvo === true) {
-      setTextCode("");
+      setTextCode(salvo.codigo);
       cards[cardIndice].id = salvo.id;
       setCards([...cards]);
-      console.log(salvo);
     }
   }, [salvo]);
 
@@ -126,6 +118,7 @@ const Menu = ({
     };
     if (possuiAtributos(deleteItem) > 0) excluir();
   }, [deleteItem]);
+
   console.log(cards);
 
   return (
