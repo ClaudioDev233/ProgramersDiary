@@ -27,8 +27,8 @@ namespace ProgrammersDiary.BackEnd.Controllers
         [HttpGet]
         public ActionResult<List<Card>> GetTodos() {
             var cards = _cardService.ObterTodos(); 
-            if(cards.Count <= 0 || cards is null )
-                return NotFound();
+            // if(cards.Count <= 0 || cards is null )
+            //     return NotFound();
             return Ok(cards);
         }
 
