@@ -6,7 +6,7 @@ import prettier from "prettier";
 import Error from "../Error/Error";
 import crud from "../../utils/crud";
 import { pluginsLista, possuiAtributos } from "../../utils/utils";
-
+import { toast } from "react-toastify";
 /*
   o header vai ser responsavel por salvar o conteudo que está no contexto manipulado.
 */
@@ -31,6 +31,11 @@ const Header = ({ itemManipulavel, setManipulavelItem, codigo }) => {
           Vai forçar a renderização de todos os componentes que usam esse contexto, assim corrigindo
           o problema do assincrono
         */
+        toast.success("salvando", {
+          autoClose: 200,
+          theme: "dark",
+          delay: 100,
+        });
         setManipulavelItem({
           ...itemManipulavel,
           novo: false,
@@ -63,7 +68,7 @@ const Header = ({ itemManipulavel, setManipulavelItem, codigo }) => {
     }
   }, [codigo]);
 
-    /*Alem de salvar, quando o card for alterado va devolver o codigo ja formatado para home*/
+  /*Alem de salvar, quando o card for alterado va devolver o codigo ja formatado para home*/
   function save() {
     // try {
     if (itemManipulavel.nome) {
@@ -77,18 +82,20 @@ const Header = ({ itemManipulavel, setManipulavelItem, codigo }) => {
 
   return (
     <>
-      <HeaderWrapper>
-        <Title>
-          {error.err ? (
-            <Error texto={error.err} />
-          ) : itemManipulavel.linguagem ? (
-            itemManipulavel.linguagem.labelLinguagem
-          ) : null}
-        </Title>
-        <Save onClick={save}>
-          <AiOutlineSave size="30px" />
-        </Save>
-      </HeaderWrapper>
+      <div>
+        <HeaderWrapper>
+          <Title>
+            {error.err ? (
+              <Error texto={error.err} />
+            ) : itemManipulavel.linguagem ? (
+              itemManipulavel.linguagem.labelLinguagem
+            ) : null}
+          </Title>
+          <Save onClick={save}>
+            <AiOutlineSave size="30px" />
+          </Save>
+        </HeaderWrapper>
+      </div>
     </>
   );
 };

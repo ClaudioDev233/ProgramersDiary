@@ -5,6 +5,9 @@ import { WrapperGlobal } from "./styles";
 import ManipulateProvider from "./context/ManipulaItem/ManipulateItem";
 import NewItemProvider from "./context/NewItem/NewItem";
 import OldItemProvider from "./context/OldItem/OldItem";
+import { ToastContainer } from "react-toastify";
+
+import "react-toastify/dist/ReactToastify.css";
 
 function App() {
   return (
@@ -16,6 +19,7 @@ function App() {
               <Routes>
                 <Route path="/" element={<Home />} />
               </Routes>
+              <ToastContainer />
             </WrapperGlobal>
           </OldItemProvider>
         </NewItemProvider>
