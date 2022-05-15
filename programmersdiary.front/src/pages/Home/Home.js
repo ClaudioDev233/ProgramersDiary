@@ -24,7 +24,7 @@ const Home = () => {
   }, [itemManipulavel]);
 
   useEffect(() => {
-    if (manipulableItem.codigo != textCode) manipulableItem.salvo = false;
+    if (itemManipulavel.codigo != textCode) itemManipulavel.salvo = false;
   }, [textCode]);
 
   // faz um fetch para pegar todas as linguagens do banco de
@@ -56,7 +56,7 @@ const Home = () => {
             height="64vh"
             width={"100%"}
             onChange={(value, viewUpdate) => {
-              console.log("value:", value);
+              // console.log("value:", value);
               setTextCode(value);
             }}
             extensions={[

@@ -39,12 +39,14 @@ const Modal = ({
   const [label, setLabel] = useState("");
   const [errors, setErros] = useState({});
   const [objetoLinguagem, setObjetoLinguagem] = useState({});
-
+  const [limpar, setLimpar] = useState(false);
+  const [standBy, setStandBy] = useState({});
+  const [teste, setTeste] = useState(false);
   // caso o container do modal seja clicado, o modal  fecha
   function handleClick(e) {
     if (e.currentTarget == e.target) {
       setModalActive(false);
-      if (!itemManipulavel.aberto) setManipulavelItem({});
+      // if (!itemManipulavel.aberto) setManipulavelItem({});
     }
   }
 
@@ -63,7 +65,6 @@ const Modal = ({
   function handleSubmit(e) {
     e.preventDefault();
     const error = checkFields();
-
     if (possuiAtributos(error) == 0) {
       // caso nao exista
       if (!id) {
@@ -87,7 +88,7 @@ const Modal = ({
         };
 
         /*
-          Quando um novo item for criado, utilizaremos o contexto de newItem, esse contexto vai forçar a renderização do menu, 
+          Quando um novo item for criado, utilizaremos o contexto de newItem, esse contexto vai forçar a renderização do menu,
           pq menu está á utiliza-lo.
 
         */
@@ -124,25 +125,30 @@ const Modal = ({
         };
         if (possuiAtributos(itemManipulavel) <= 2) {
           addOldItem(obj);
-          setManipulavelItem(obj);
+          console.log("aquifs");
         } else if (
           possuiAtributos(itemManipulavel) >= 3 &&
           !itemManipulavel.salvo
         ) {
           alert("Salve antes de iniciar outro card");
-          addOldItem(obj);
+          // setStandBy(obj);
+          console.log(obj);
         } else {
           addOldItem(obj);
-          setManipulavelItem(obj);
+          console.log("ola mundo");
         }
       }
       setModalActive(false);
+      // setTimeout(() => {
+      setLimpar(true);
+      console.log("Limpando");
+      // }, 1000);
     }
   }
 
   // faz um reset no modal quando for aberto
   useEffect(() => {
-    if (modalActive) {
+    if (limpar) {
       setNome("");
       setDesc("");
       setId("");
@@ -150,7 +156,7 @@ const Modal = ({
       setCode("");
       setLabel("");
     }
-  }, [modalActive]);
+  }, [limpar]);
 
   /*
     Quando abrimos um card já existente, será esse effect que pegará suas informaçoes e colocará no modal,

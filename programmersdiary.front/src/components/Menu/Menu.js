@@ -101,6 +101,7 @@ const Menu = ({
 
   useEffect(() => {
     // if (OldItem.novo === false) addManipulableItem(OldItem);
+    if (OldItem.novo === false) setManipulavelItem(OldItem);
   }, [OldItem]);
 
   // sendo um card novo, vamos acha-lo na lista e vamos atribuir seu id  para assim permanecer "aberto"
