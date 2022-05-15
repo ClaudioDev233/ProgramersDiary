@@ -138,13 +138,13 @@ const Menu = ({
         >
           <AiOutlineMenu size={"20px"} />
         </ButtonFecharMenu>
+        <SearchBar
+          value={search}
+          onChange={(e) => {
+            setSearch(e.target.value);
+          }}
+        />
         <WrapperCards>
-          <SearchBar
-            value={search}
-            onChange={(e) => {
-              setSearch(e.target.value);
-            }}
-          />
           {!search &&
             !loading &&
             cards.map((card) => (

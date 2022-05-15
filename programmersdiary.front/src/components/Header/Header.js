@@ -27,15 +27,16 @@ const Header = ({ itemManipulavel, setManipulavelItem, codigo }) => {
           itemManipulavel.codigo = codigo;
           identificador = await crud.inserir(itemManipulavel);
         }
-        /*
-          Vai forçar a renderização de todos os componentes que usam esse contexto, assim corrigindo
-          o problema do assincrono
-        */
+        
         toast.success("salvando", {
           autoClose: 200,
           theme: "dark",
           delay: 100,
         });
+        /*
+          Vai forçar a renderização de todos os componentes que usam esse contexto, assim corrigindo
+          o problema do assincrono
+        */
         setManipulavelItem({
           ...itemManipulavel,
           novo: false,

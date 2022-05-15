@@ -4,14 +4,12 @@ import Wrapper from "../../components/Wrapper/Wrapper";
 import { BlackWrapper } from "./styles";
 import Header from "../../components/Header/Header";
 import Modal from "../../components/Modal/Modal";
-import { ManipulateContext } from "../../context/ManipulaItem/ManipulateItem";
 import CodeMirror from "@uiw/react-codemirror";
 import { oneDark } from "@codemirror/theme-one-dark";
 import { codeLanguages, possuiAtributos } from "../../utils/utils";
 import crud from "../../utils/crud.js";
 
 const Home = () => {
-  // const { manipulableItem, addManipulableItem } = useContext(ManipulateContext);
   const [itemManipulavel, setManipulavelItem] = useState({});
   const [itemCard, setItemCard] = useState({});
   const [textCode, setTextCode] = useState("");
@@ -59,7 +57,6 @@ const Home = () => {
             height="64vh"
             width={"100%"}
             onChange={(value, viewUpdate) => {
-              // console.log("value:", value);
               setTextCode(value);
             }}
             extensions={[
